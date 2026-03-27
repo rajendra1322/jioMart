@@ -8,7 +8,6 @@ function Orders ()  {
     const [order ,setOrders]=useState([]);
     const [hoverid,setHoerId]=useState(null);
     const[addresshover,setAddresshover]=useState(null);
-    const[address,setAddress]=useState([]);
     useEffect(()=>{
         const fetchorder=async()=>{
         const res=await axios.get("https://backend-lr7e.onrender.com/getorder");

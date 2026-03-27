@@ -4,10 +4,7 @@ import hamburger from "./assets/hamburger.svg"
 import shopping from "./assets/shopping.svg"
 import user from "./assets/user.svg"
 import "./Navigation.css"
-import Signin from "./Signin.jsx"
 import { data, Link, useLocation, useNavigate } from "react-router-dom"
-import Location from "./Location.jsx"
-import Footer from "./Footer.jsx"
 import livenow from "./assets/livenow.png"
 import every from "./assets/everything.webp"
 import home from "./assets/home.webp"
@@ -24,7 +21,6 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react"
 import pin from '/home/rajendra/dregali/workspace/jioMart/src/assets/locationnn.svg'
-import location from './assets/locationn.svg'
 import axios from "axios"
 import toast from "react-hot-toast"
 

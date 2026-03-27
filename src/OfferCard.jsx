@@ -1,6 +1,5 @@
 import './OfferCards.css'
 import mobile from './assets/mobileoffer.webp'
-import redmiFive from './assets/redminote5.webp'
 
 function OfferCard(props){
     return (

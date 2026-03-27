@@ -5,11 +5,9 @@ import Signin from "./Signin.jsx";
 import Location from "./Location.jsx"
 import Footer from "./Footer.jsx";
 import Card from "./Card.jsx";
-import OfferCard from "./OfferCard.jsx";
 import Offersection from "./Offersection.jsx";
 import axios from "axios";
-import { use, useEffect, useState } from "react";
-import Otp from "./Otp.jsx";
+import { useEffect, useState } from "react";
 import Admin from "./Admin.jsx";
 import AddItems from "./AddItems.jsx";
 import Items from "./Items.jsx";

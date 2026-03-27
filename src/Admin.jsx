@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './Admin.css';
-import { Navigate, useNavigate } from 'react-router';
+import {  useNavigate } from 'react-router';
 import toast,{Toaster} from 'react-hot-toast';
 
 

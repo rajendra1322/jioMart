@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './View.css'
 import left from "./assets/left.svg"
-import { Link, Navigate, useNavigate, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import axios from 'axios';
 
 

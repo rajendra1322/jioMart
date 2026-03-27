@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './Makepayment.css'
-import  jiomartlogo from './assets/jiomartlogo.png'
 import jiobag from './assets/jiobag.svg'
 import sbi from './assets/ssbi.webp'
 import yes from './assets/yes.webp'

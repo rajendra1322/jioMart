@@ -1,7 +1,6 @@
 
-import { useState } from "react";
 import "./Location.css"
-import message from "/home/rajendra/dregali/workspace/jioMart/src/assets/message-solid-full.svg"
+
 
 function Location() {
     

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import './Cartdetails.css'
 import Navigation from './Navigation';
 import { useNavigate } from 'react-router';

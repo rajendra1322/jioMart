@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './Items.css'
 import axios from 'axios';
-import { Navigate, useNavigate, useParams } from 'react-router';
+import {  useNavigate, useParams } from 'react-router';
 
 
 

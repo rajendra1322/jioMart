@@ -1,7 +1,7 @@
 import React from 'react'
 import './Edit.css'
 import left from './assets/left.svg'
-import { Navigate, useNavigate } from 'react-router'
+import {  useNavigate } from 'react-router'
 
 
 function Edit(){
