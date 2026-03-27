@@ -22,6 +22,8 @@ import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
+import pin from "./assets/locationnn.svg"
+import locationn from "./assets/locationn.svg"
 
 
 function Navigation() {
@@ -289,10 +291,11 @@ function Navigation() {
                         <button className="locbtn">Sign In to select address</button>
 
                         <div className="pincodediv">
+                            <img src={pin} alt="pincode" className="locationimg" />
                             <a href="/" className="atag" onClick={handlepinclick}>Enter a pincode</a>
                         </div>
                         <div className="locationdiv">
-                            <img src={location} alt="pincode" className="locationimg" />
+                            <img src={locationn} alt="pincode" className="locationimg" />
                             <a href="/" className="atag">Direct My Location</a>
                         </div>
                     </div>
