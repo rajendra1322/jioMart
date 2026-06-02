@@ -18,10 +18,34 @@ function Offersection(){
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+    ],
   };
   
     return(
-        <div className='offersection'>
+        <section className='offersection'>
+            <div className='offerSectionHeader'>
+                <div>
+                    <p>Limited time deals</p>
+                    <h2>Top Offers For You</h2>
+                </div>
+                <span>Fresh picks every day</span>
+            </div>
             <Slider {...settings}> 
                 
 
@@ -39,7 +63,7 @@ function Offersection(){
         
             
 
-        </div>
+        </section>
         
         
         

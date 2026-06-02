@@ -5,11 +5,13 @@ import pen from './assets/pen.svg';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 import toast,{Toaster} from 'react-hot-toast';
+import CartSkeleton from './skeletons/CartSkeleton';
 
 
 
 function OrderReview  ()  {
     const[orders,setOrder]=useState([]);
+    const [loading, setLoading] = useState(true);
     const[showdetails,setShowdetails]=useState(null);
     const[addres,setAddress]=useState(false);
     const [showform,setShowform]=useState(false);
@@ -18,7 +20,6 @@ function OrderReview  ()  {
     const[homeaddress,setHomeaddress]=useState("");
     const[area,setArea]=useState("");
     const[rname,setRname]=useState("");
-    const[message,setMessage]=useState("");
     const[addresstore,setAddresstore]=useState([]);
     const navigate=useNavigate();
     useEffect(()=>{
@@ -42,6 +43,8 @@ function OrderReview  ()  {
         }
         catch(err){
             console.log(err);
+        } finally {
+            setLoading(false);
         }
     }
     fetchData();
@@ -104,6 +107,9 @@ function OrderReview  ()  {
         <p className='rajmartname'>RajMart</p>
         </div>
     </div>
+    {loading ? (
+    <CartSkeleton />
+    ) : (
     <div className='ordercontainertop'>
         <h2 className='orderh2'>order Review</h2>
        <div className='orderbone'>
@@ -275,6 +281,7 @@ function OrderReview  ()  {
         
        </div>
     </div>
+    )}
     </>
   )
 }

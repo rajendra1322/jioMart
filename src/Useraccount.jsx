@@ -11,10 +11,11 @@ import pan from './assets/pan.svg';
 import legal from './assets/legal.svg'
 import about from './assets/about.svg'
 import logout from './assets/logout.svg'
-import { flushSync } from 'react-dom';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from "react-router-dom";
+import UserSkeleton from './skeletons/UserSkeleton';
+import OrdersSkeleton from './skeletons/OrdersSkeleton';
 
 
 
@@ -26,10 +27,13 @@ function Useraccount() {
     const [accountdtl, setAccountdtl] = useState(true);
     const [orders, setOrders] = useState([]);
     const [userdtl, setUserdtl] = useState(null);
-    const navigate = useNavigate();
-    const greater = ">";
     const [searchParams] = useSearchParams();
     const orderId = searchParams.get("orderId");
+    const [ordersLoading, setOrdersLoading] = useState(true);
+    const [userLoading, setUserLoading] = useState(true);
+    const [scannedOrderLoading, setScannedOrderLoading] = useState(Boolean(orderId));
+    const navigate = useNavigate();
+    const greater = ">";
     const handledownarrow = (section) => {
         if (myaccountdown === section) {
             setMyaccountdown(null);
@@ -51,6 +55,7 @@ function Useraccount() {
                 }
             );
             setOrders(res.data);
+            setOrdersLoading(false);
 
         }
         fetchdata();
@@ -76,6 +81,8 @@ function Useraccount() {
 
             } catch (err) {
                 console.log(err);
+            } finally {
+                setUserLoading(false);
             }
         }
 
@@ -130,6 +137,8 @@ function Useraccount() {
                 setOrder(res.data);
             } catch (err) {
                 console.log("QR Fetch Error:", err);
+            } finally {
+                setScannedOrderLoading(false);
             }
         };
 
@@ -229,11 +238,13 @@ function Useraccount() {
 
 
 
-                <div className="useraccountbtwo w-2/3">
+                <div className="useraccountbtwo">
 
   
-  {order ? (
-    <div className=" p-5 rounded-xl shadow mt-[100px] ml-[20px] border-[#00000050] border-[1px] border-[soild]">
+  {scannedOrderLoading ? (
+    <OrdersSkeleton count={1} />
+  ) : order ? (
+    <div className="account-panel p-5 rounded-xl shadow border-[#00000050] border-[1px] border-[soild]">
 
       <h2 className="text-lg font-semibold text-purple-600 mb-4 ">
         Scanned Order
@@ -275,7 +286,10 @@ function Useraccount() {
 
      
       {accountdtl && (
-        <div className=" p-5 rounded-xl shadow mb-6 mt-[100px] border-[#00000041] border-[1px] border-[soild] ml-[30px]">
+        userLoading ? (
+          <UserSkeleton />
+        ) : (
+        <div className="account-panel p-5 rounded-xl shadow mb-6 border-[#00000041] border-[1px] border-[soild]">
 
           <h2 className="text-lg font-semibold mb-5 mt-[-10px] ml-[-10px] underline">
             Account Information
@@ -294,13 +308,17 @@ function Useraccount() {
 
           
         </div>
+        )
       )}
 
       {myorder && (
+        ordersLoading ? (
+          <UserSkeleton orders />
+        ) : (
         <div className="space-y-4">
 
           {orders.map((order) => (
-            <div key={order._id} className=" border-[#00000048] border-[1px]  p-4 rounded-xl shadow mt-[100px] ml-[30px]">
+            <div key={order._id} className="account-panel border-[#00000048] border-[1px] p-4 rounded-xl shadow">
 
               <p className="text-green-600 font-medium">
                 {order.status}
@@ -327,7 +345,7 @@ function Useraccount() {
                 </div>
               ))}
 
-              <button className="mt-3 ml-[600px] text-red-500 text-sm hover:underline">
+              <button className="mt-3 text-red-500 text-sm hover:underline">
                 Cancel
               </button>
 
@@ -335,6 +353,7 @@ function Useraccount() {
           ))}
 
         </div>
+        )
       )}
 
     </>

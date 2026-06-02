@@ -32,13 +32,13 @@ function Admin() {
         
     }
   return (
-   <div className="min-h-screen w-[1900px] flex items-center  justify-center  px-4">
+   <div className="min-h-screen w-full flex items-center justify-center px-4">
 
   <Toaster position='top-center'  />
-  <div className="w-[500px] max-w-md h-[500px] bg-[white]  rounded-2xl shadow-2xl p-8">
+  <div className="w-full max-w-md min-h-[500px] bg-[white] rounded-2xl shadow-2xl p-8">
 
     
-    <h2 className="text-2xl font-bold text-center text-black mb-9 ml-[-240px]">
+    <h2 className="text-2xl font-bold text-center text-black mb-9">
       Admin Login
     </h2>
 

@@ -2,38 +2,47 @@ import React, { useEffect, useState } from 'react'
 import './Userdetails.css'
 import Adminhome from './Adminhome'
 import axios from 'axios';
+import TableSkeleton from './skeletons/TableSkeleton';
 
 
 function Userdetails  ()  {
     const[users,setUsers]=useState([]);
+    const [loading,setLoading]=useState(true);
     useEffect(()=>{
        async function fetchData(){
-          const res= await axios.get("https://backend-fgbg.onrender.com/getalluser");
-          setUsers(res.data);
+          try {
+            const res= await axios.get("https://backend-fgbg.onrender.com/getalluser");
+            setUsers(res.data);
+          } catch (err) {
+            console.log(err);
+          } finally {
+            setLoading(false);
+          }
 
        }
        fetchData();
     },[])
     
   return (
-   <div className="flex min-h-screen bg-gray-100 ">
+   <div className="admin-page bg-gray-100">
   
   
-  <div className="w-[260px] shadow-lg bg-white">
     <Adminhome />
-  </div>
 
   
-  <div className="flex-1 p-8 ml-[80px] w-[1500px]">
+  <div className="admin-content">
     
-    <h1 className="text-3xl font-bold text-gray-800 mb-2 w-[1500px]">
+    <h1 className="text-3xl font-bold text-gray-800 mb-2">
       RajMart Users
     </h1>
-    <p className="text-gray-500 mb-6 w-[900px]">
+    <p className="text-gray-500 mb-6">
       Manage and view all registered users
     </p>
 
     
+    {loading ? (
+      <TableSkeleton rows={8} cards />
+    ) : (
     <div className="grid gap-6 
       grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ">
 
@@ -46,7 +55,7 @@ function Userdetails  ()  {
             shadow-md hover:shadow-2xl
             transform hover:-translate-y-2 hover:scale-[1.02]
             transition-all duration-300 ease-in-out
-            cursor-pointer relative overflow-hidden w-[350px]
+            cursor-pointer relative overflow-hidden w-full
           "
         >
           
@@ -72,6 +81,7 @@ function Userdetails  ()  {
       ))}
 
     </div>
+    )}
   </div>
 </div>
   )

@@ -88,9 +88,9 @@ function Otp({ length = 6, onotpSubmit = () => { }, email, redirect }) {
 
 
   return (
-   <div className="min-h-screen  w-[1900px] flex items-center justify-center bg-white  ml-[-22px] mt-[-22px]">
+   <div className="min-h-screen w-full flex items-center justify-center bg-white px-4">
 
-  <div className="w-[400px] max-w-md bg-white rounded-2xl shadow-xl p-6 relative">
+  <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 relative">
 
     
     <img
@@ -122,7 +122,7 @@ function Otp({ length = 6, onotpSubmit = () => { }, email, redirect }) {
     </p>
 
     
-    <div className="flex justify-center gap-3 mt-8">
+    <div className="flex justify-center gap-2 sm:gap-3 mt-8">
       {otp.map((value, index) => (
         <input
           key={index}
@@ -163,5 +163,4 @@ function Otp({ length = 6, onotpSubmit = () => { }, email, redirect }) {
   );
 }
 export default Otp
-
 

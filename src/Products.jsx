@@ -3,17 +3,20 @@ import './Products.css';
 import axios from 'axios';
 import Slider from 'react-slick';
 import { Link } from 'react-router';
+import ProductGridSkeleton from './skeletons/ProductGridSkeleton';
 
 
 
 function Products () {
   const [product,Setproduct]=useState([])
+  const [loading, setLoading] = useState(true);
   
 
   useEffect(()=>{
-    axios.get("https://backend-fgbg.onrender.com/fetchProduct")
+  axios.get("https://backend-fgbg.onrender.com/fetchProduct")
     .then(res=>Setproduct(res.data))
-    .catch(err=>console.log("api error",err));
+    .catch(err=>console.log("api error",err))
+    .finally(()=>setLoading(false));
     
     
 
@@ -27,7 +30,47 @@ function Products () {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 420,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+    ],
   };
+  if (loading) {
+    return (
+      <div className='productcontainer'>
+        <ProductGridSkeleton count={5} />
+      </div>
+    );
+  }
+
   return (
     
     
@@ -37,8 +80,8 @@ function Products () {
       {product.map((item)=>{
       return(
       
-        <Link to={`/Productdetails/${item._id}`}>
-        <div className='products' key={item._id}>
+        <Link to={`/Productdetails/${item._id}`} key={item._id}>
+        <div className='products'>
         <img src={item.image} className='imageproduct'  width={100}/>
         <p className='productname'>{item.name}</p>
         

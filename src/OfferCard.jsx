@@ -4,7 +4,7 @@ import mobile from './assets/mobileoffer.webp'
 function OfferCard(props){
     return (
         <>
-        <div className='maincontainer'>
+        <div className='offercardShell'>
         <div className='offercontainerr'>
            <div className='pricediv'>
             <h2 className='headdingoffer'>{props.name}</h2>
@@ -14,7 +14,7 @@ function OfferCard(props){
 
             
             
-            <button className='btncard'>Shop Now</button>
+            <button className='offerBtn'>Shop Now</button>
             </div>
             <div className='image'>
             <img src={mobile} alt="mobileoffer" className='imgmbl' />

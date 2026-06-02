@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router'
 import './Productdetails.css'
 import {addtocart} from '../src/utility/cart.js'
 import toast,{ Toaster } from 'react-hot-toast'
+import ProductDetailsSkeleton from './skeletons/ProductDetailsSkeleton'
 
 
 function Productdetails (){
@@ -28,12 +29,9 @@ function Productdetails (){
     fetchData();
     },[id])
     if(!product){
-        return <div className="flex flex-col items-center justify-center mt-96 ml-[900px]">
-          <div className="w-28 h-28 border-4 border-blue-400 border-t-transparent rounded-full border-[10px] animate-spin">
-             <div className="w-20 h-20 border-4 border-red-400  border-b-transparent rounded-full ml-[5px] mt-[5px] border-[10px] animate-spin "></div>
-
-          </div>
-          <p className="mt-4 text-gray-700 font-semibold text-xl animate-pulse">Loading...</p>
+        return <div>
+          <Navigation />
+          <ProductDetailsSkeleton />
         </div>
     }
     const usercount=localStorage.getItem("token");
@@ -64,13 +62,15 @@ function Productdetails (){
     
     <div>
         <Navigation />
-      <div className='detailscontainer'>
+      <main className='detailscontainer'>
         <Toaster position='top-center' />
         <div className='detailsdivide'>
         <div className='detailsone'>
           <img src={product.image} alt={product.image}  className='detailsimage'/>
+         <div className='detailsactions'>
          <button className='detailscart' onClick={handleAddtocart} disabled={disable}>Add to Cart</button>
          <button className='detailsbuy'> Buy Now</button>
+         </div>
 
 
         </div>
@@ -100,7 +100,7 @@ function Productdetails (){
         )}
         
         
-      </div>
+      </main>
      
     </div>
   )

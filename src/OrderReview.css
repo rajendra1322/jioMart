@@ -474,3 +474,119 @@
     padding-bottom: 10px;
     padding-top: 10px;
 }
+
+@media (max-width: 1200px) {
+    .ordertop {
+        width: 100%;
+    }
+
+    .orderimgtop {
+        margin-left: 24px;
+    }
+
+    .ordercontainertop {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+        padding-left: 0;
+        gap: 24px;
+    }
+
+    .orderbone {
+        flex: 1;
+        min-width: 0;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 900px) {
+    .ordercontainertop {
+        flex-direction: column;
+        padding: 24px 0;
+    }
+
+    .orderbone,
+    .orderbtwo {
+        width: 100%;
+        margin-top: 0;
+    }
+
+    .orderpen {
+        margin-right: 16px;
+        flex: 0 0 auto;
+    }
+
+    .ordersecondtop {
+        margin-left: 0;
+        overflow-x: auto;
+        gap: 12px;
+    }
+
+    .orderamount,
+    .orderbtn {
+        margin-left: 0;
+    }
+
+    .orderpaysave {
+        margin-left: 0;
+        text-align: right;
+    }
+}
+
+@media (max-width: 520px) {
+    .ordertop {
+        height: 82px;
+    }
+
+    .orderimgtop {
+        width: 44px;
+        margin-top: 19px;
+    }
+
+    .rajmartname {
+        font-size: 22px;
+        margin-top: 28px;
+    }
+
+    .ordercontainertop {
+        width: min(100% - 20px, 1180px);
+    }
+
+    .addressdiv,
+    .secretdetails,
+    .orderpayone,
+    .orderpaytwo,
+    .orderpaythree,
+    .orderpayfour {
+        gap: 12px;
+    }
+
+    .ordersimg {
+        width: 96px;
+        height: 96px;
+        object-fit: contain;
+    }
+
+    .ordersecondtop {
+        font-size: 13px;
+        padding: 14px;
+    }
+
+    .lines,
+    .linesnext {
+        display: none;
+    }
+
+    .addresscontainer {
+        width: min(100%, 400px);
+        overflow-y: auto;
+    }
+
+    .addressbtnn,
+    .addressaddsave {
+        width: calc(100% - 40px);
+    }
+
+    .addressinput {
+        width: calc(100% - 20px);
+    }
+}

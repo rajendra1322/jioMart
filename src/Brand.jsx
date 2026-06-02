@@ -14,6 +14,38 @@ function Brand ()  {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 900,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+      {
+        breakpoint: 420,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+        },
+      },
+    ],
   };
     const brand=[      
         "https://imgs.search.brave.com/OGqepOPMJBbunSq6fbPVa-TgAwO46IPZChQViRTJE6g/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuc2Vla2xvZ28u/Y29tL2xvZ28tcG5n/LzM3LzEvYm9hdC1s/b2dvLXBuZ19zZWVr/bG9nby0zNzkxODUu/cG5n",
@@ -36,9 +68,9 @@ function Brand ()  {
     
     <div className='brandcontainer'>
         <Slider {...settings}>
-        {brand.map(item=>{
+        {brand.map((item,index)=>{
             return(
-            <div key={item._id} className='brandimagediv'>
+            <div key={index} className='brandimagediv'>
                 <div className='brandimagesecond'>
                 <img src={item} alt="brand images"  className='brandimages'/>
                 </div>

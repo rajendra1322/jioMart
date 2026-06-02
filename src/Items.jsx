@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router';
 import Adminhome from './Adminhome';
 import toast, { Toaster } from 'react-hot-toast';
+import ProductDetailsSkeleton from './skeletons/ProductDetailsSkeleton';
 
 
 
@@ -17,6 +18,7 @@ function Items() {
   const [category, setCategory] = useState("");
   const { id } = useParams();
   const isEdit = Boolean(id);
+  const [loading, setLoading] = useState(isEdit);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,6 +37,8 @@ function Items() {
         }
         catch (err) {
           console.log("fetch error", err);
+        } finally {
+          setLoading(false);
         }
       };
       fetchData();
@@ -115,7 +119,7 @@ function Items() {
 
   return (
 
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="admin-page bg-gray-50">
 
 
 
@@ -123,11 +127,14 @@ function Items() {
       <Toaster position='top-center' />
 
 
-      <div className="flex-1 flex items-center justify-center p-6">
+      <div className="admin-content flex items-center justify-center">
 
 
+        {loading ? (
+          <ProductDetailsSkeleton />
+        ) : (
 
-        <div className="w-[530px] ml-[400px]  max-w-xl bg-white border border-gray-100 shadow-2xl rounded-2xl p-8">
+        <div className="w-full max-w-xl bg-white border border-gray-100 shadow-2xl rounded-2xl p-8">
 
 
           <h2 className="text-[30px] ml-[-10px]  mt-[-10px] font-bold text-gray-800 mb-8 text-center ">
@@ -222,6 +229,7 @@ function Items() {
 
           </form>
         </div>
+        )}
 
       </div>
     </div>

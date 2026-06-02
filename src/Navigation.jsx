@@ -1,10 +1,5 @@
-import logo from "./assets/jiomartlogoo.png"
-import search from "./assets/search.svg"
-import hamburger from "./assets/hamburger.svg"
-import shopping from "./assets/shopping.svg"
-import user from "./assets/user.svg"
 import "./Navigation.css"
-import { data, Link, useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import livenow from "./assets/livenow.png"
 import every from "./assets/everything.webp"
 import home from "./assets/home.webp"
@@ -23,9 +18,19 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
 import pin from "./assets/locationnn.svg"
-import locationn from "./assets/locationn.svg"
 import bag from './assets/spbag.webp';
 import MapPicker from "./Mappicker"
+import {
+    LocateFixed,
+    MapPin,
+    Menu,
+    Search,
+    ShieldCheck,
+    ShoppingBag,
+    User,
+    X,
+} from "lucide-react"
+import ProductSkeleton from "./skeletons/ProductSkeleton"
 
 
 function Navigation() {
@@ -37,16 +42,44 @@ function Navigation() {
         autoplaySpeed: 3000,
         speed: 500,
         slidesToShow: 7,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        responsive: [
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 5,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 800,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    arrows: false,
+                },
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    arrows: false,
+                },
+            },
+        ],
 
     };
     const [showLocation, setshowLocaiton] = useState(false);
     const [showcart, setShowcart] = useState(false);
     const [cart, setCart] = useState([]);
     const [showpincode, setShowpincode] = useState(false);
-    const [eemail, setEmail] = useState("");
     const location = useLocation();
     const [userData, setUserData] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [productsLoading, setProductsLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showSearchResults, setShowSearchResults] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -170,6 +203,77 @@ function Navigation() {
     }
 
     const [mapLocation, setmapLocation] = useState(null);
+    const [locationQuery, setLocationQuery] = useState("");
+    const [locationResults, setLocationResults] = useState([]);
+    const [locationSearching, setLocationSearching] = useState(false);
+
+    useEffect(() => {
+        axios.get("https://backend-fgbg.onrender.com/fetchProduct")
+            .then((res) => setProducts(Array.isArray(res.data) ? res.data : []))
+            .catch((err) => console.log("product search api error", err))
+            .finally(() => setProductsLoading(false));
+    }, []);
+
+    const filteredProducts = searchQuery.trim()
+        ? products
+            .filter((item) => {
+                const term = searchQuery.toLowerCase();
+                return (
+                    item.name?.toLowerCase().includes(term) ||
+                    item.description?.toLowerCase().includes(term)
+                );
+            })
+            .slice(0, 6)
+        : [];
+
+    const openProduct = (product) => {
+        setSearchQuery("");
+        setShowSearchResults(false);
+        navigatee(`/Productdetails/${product._id}`);
+    };
+
+    const handleProductSearch = (e) => {
+        e.preventDefault();
+
+        if (!searchQuery.trim()) return;
+        if (filteredProducts.length > 0) {
+            openProduct(filteredProducts[0]);
+            return;
+        }
+
+        toast.error("No matching product found.");
+    };
+
+    const searchLocation = async (e) => {
+        e.preventDefault();
+        if (!locationQuery.trim()) return;
+
+        setLocationSearching(true);
+        try {
+            const res = await fetch(
+                `https://nominatim.openstreetmap.org/search?format=json&limit=5&q=${encodeURIComponent(locationQuery)}`
+            );
+            const data = await res.json();
+            setLocationResults(Array.isArray(data) ? data : []);
+            if (!data?.length) toast.error("No location found.");
+        } catch (err) {
+            console.log(err);
+            toast.error("Location search failed.");
+        } finally {
+            setLocationSearching(false);
+        }
+    };
+
+    const selectLocationResult = (result) => {
+        const nextLocation = {
+            lat: Number(result.lat),
+            lng: Number(result.lon),
+        };
+        setmapLocation(nextLocation);
+        setAddress(result.display_name);
+        setLocationResults([]);
+        setLocationQuery(result.display_name);
+    };
 
     const getAddress = async (lat, lng) => {
         try {
@@ -188,7 +292,7 @@ function Navigation() {
     const [loading, setLoading] = useState(false);
     const handleSave = async () => {
         if (!mapLocation) {
-            alert("Please select location on map");
+            toast.error("Please search or select a location on the map.");
             return;
         }
 
@@ -239,29 +343,67 @@ function Navigation() {
 
                     </div>
                     <div className="navbarmiddle">
-                        <div className="middlemain">
+                        <form className="middlemain" onSubmit={handleProductSearch}>
 
-                            <div className="search">
-                                <img src={search} alt="search" className="searchicons" />
+                            <button className="search" type="submit" aria-label="Search products">
+                                <Search className="searchicons" />
 
-                            </div>
+                            </button>
                             <div className="text">
-                                <input type="text" placeholder="Search In RajMart" className="searchtext" />
+                                <input
+                                    type="text"
+                                    placeholder="Search for groceries, mobiles, fashion..."
+                                    className="searchtext"
+                                    value={searchQuery}
+                                    onChange={(e) => {
+                                        setSearchQuery(e.target.value);
+                                        setShowSearchResults(true);
+                                    }}
+                                    onFocus={() => setShowSearchResults(true)}
+                                />
 
 
                             </div>
 
-                            <div className="hamburger">
-                                <img src={hamburger} alt="hamicon" className="iconham" />
+                            <button className="hamburger" type="button" aria-label="Browse menu">
+                                <Menu className="iconham" />
 
-                            </div>
+                            </button>
 
+                            {showSearchResults && searchQuery.trim() && (
+                                <div className="searchResults">
+                                    {productsLoading ? (
+                                        <>
+                                            <ProductSkeleton compact />
+                                            <ProductSkeleton compact />
+                                            <ProductSkeleton compact />
+                                        </>
+                                    ) : filteredProducts.length > 0 ? (
+                                        filteredProducts.map((item) => (
+                                            <button
+                                                type="button"
+                                                className="searchResultItem"
+                                                key={item._id}
+                                                onMouseDown={() => openProduct(item)}
+                                            >
+                                                <img src={item.image} alt={item.name} />
+                                                <span>
+                                                    <strong>{item.name}</strong>
+                                                    <small>₹{item.price}</small>
+                                                </span>
+                                            </button>
+                                        ))
+                                    ) : (
+                                        <p className="noSearchResult">No products match "{searchQuery}"</p>
+                                    )}
+                                </div>
+                            )}
 
-                        </div>
+                        </form>
                         <div className="rightmain">
                             <div className="rightnav" >
                                 <div className="shopp" onClick={toggleCart}>
-                                    <img src={shopping} alt="shopping" className="shopping" />
+                                    <ShoppingBag className="shopping" />
                                     {totalQuantity > 0 && (
                                         <span className="quantityspan">{totalQuantity}</span>
                                     )}
@@ -308,7 +450,7 @@ function Navigation() {
                                 ) : (
                                     <Link to="/Signin">
                                         <div className="userlogo">
-                                            <img src={user} alt="user" className="user" />
+                                            <User className="user" />
                                             <span className="intext">SignIn</span>
                                         </div>
                                     </Link>
@@ -317,7 +459,7 @@ function Navigation() {
 
 
                                 <Link to="/Admin">
-                                    <span className="admin">Admin</span>
+                                    <span className="admin"><ShieldCheck size={18} />Admin</span>
                                 </Link>
 
                             </div>
@@ -327,9 +469,9 @@ function Navigation() {
                 </div>
             </nav>
 
-            <div className="location" onClick={() => {setshowLocaiton(true)}}>
+            <div className="location" onClick={() => { setshowLocaiton(true) }}>
                 <p className="deliveryText">Scheduled delivery to:
-                    <strong> {place}{currentpin}</strong>
+                    <strong> {address ? address.split(",").slice(0, 2).join(", ") : `${place || ""}${currentpin || "Select location"}`}</strong>
 
                     <span className="arrow">▼</span>
 
@@ -340,82 +482,109 @@ function Navigation() {
 
             </div>
             {showLocation && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                <div className="locationModal">
 
-                    <div className="w-[420px] bg-white rounded-2xl shadow-xl p-5">
+                    <div className="locationPanel">
 
-                       
-                        <div className="flex justify-between items-center mb-3">
-                            <h2 className="text-lg font-semibold">
+
+                        <div className="locationPanelHeader">
+                            <h2>
                                 Select Delivery Location
                             </h2>
                             <button
                                 onClick={() => setshowLocaiton(false)}
-                                className="text-gray-500 hover:text-black text-lg"
+                                className="locationClose"
+                                aria-label="Close location"
                             >
-                                ✕
+                                <X size={18} />
                             </button>
                         </div>
 
-                       
-                        <p className="text-sm text-gray-600 mb-4">
+
+                        <p className="locationHelp">
                             Set your delivery location to check availability, offers and discounts.
                         </p>
 
-                       
-                        <button className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-medium py-2 rounded-lg mb-3">
+                        <form className="locationSearchBox" onSubmit={searchLocation}>
+                            <MapPin size={18} />
+                            <input
+                                type="text"
+                                placeholder="Search area, city or landmark"
+                                value={locationQuery}
+                                onChange={(e) => setLocationQuery(e.target.value)}
+                            />
+                            <button type="submit" disabled={locationSearching}>
+                                {locationSearching ? "Searching" : "Search"}
+                            </button>
+                        </form>
+
+                        {locationResults.length > 0 && (
+                            <div className="locationResults">
+                                {locationResults.map((item) => (
+                                    <button
+                                        type="button"
+                                        key={item.place_id}
+                                        onClick={() => selectLocationResult(item)}
+                                    >
+                                        <MapPin size={16} />
+                                        <span>{item.display_name}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+
+
+                        <button className="signinLocationBtn">
                             Sign In to select address
                         </button>
 
-                        
-                        <div className="flex items-center my-3">
-                            <div className="flex-1 h-px bg-gray-300"></div>
-                            <span className="px-2 text-gray-500 text-sm">OR</span>
-                            <div className="flex-1 h-px bg-gray-300"></div>
+
+                        <div className="locationDivider">
+                            <div></div>
+                            <span>OR</span>
+                            <div></div>
                         </div>
 
-                        
+
                         <div
                             onClick={handlepinclick}
-                            className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-100 mb-3"
+                            className="pincodeChoice"
                         >
                             <img src={pin} alt="pin" className="w-5 h-5" />
-                            <span className="text-sm font-medium">
+                            <span>
                                 Enter a pincode
                             </span>
                         </div>
 
-                        
-                        <div className="border rounded-lg p-3">
-                            <div className="h-[200px] rounded-md overflow-hidden mb-3">
-                                <MapPicker setLocation={setmapLocation} />
+
+                        <div className="mapCard">
+                            <div className="mapFrame">
+                                <MapPicker setLocation={setmapLocation} selectedLocation={mapLocation} />
                             </div>
 
                             <button
                                 onClick={handleSave}
                                 disabled={!mapLocation || loading}
-                                className={`w-full py-2 rounded-lg font-medium ${mapLocation
-                                    ? "bg-blue-600 hover:bg-blue-700 text-white"
-                                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                    }`}
+                                className="useLocationBtn"
                             >
+                                <LocateFixed size={17} />
                                 {loading ? "Fetching Address..." : "Use This Location"}
                             </button>
                         </div>
 
-                       
+
                         {address && (
-                            <div className="mt-4 bg-gray-100 p-3 rounded-lg">
-                                <p className="text-sm font-semibold mb-1">
+                            <div className="selectedAddress">
+                                <p>
                                     Selected Address:
                                 </p>
-                                <p className="text-sm text-gray-700 break-words">
+                                <span>
                                     {address}
-                                </p>
+                                </span>
 
                                 <button
                                     onClick={handleContinue}
-                                    className="mt-3 w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-medium"
+                                    className="continueLocationBtn"
                                 >
                                     Continue
                                 </button>

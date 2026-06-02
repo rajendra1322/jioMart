@@ -1,54 +1,91 @@
-.productcontainer{
-    height: 340px;
-    width: 1185px;
-    margin-left: 350px;
-    margin-top: 80px;
-    background-color: rgba(0, 255, 255, 0.048);
-    padding: 20px;
-
-}
-.products{
-    width: 220px;
-    height: 291px;
+.productcontainer {
+    width: min(1185px, calc(100% - 32px));
+    margin: 42px auto 0;
     background-color: white;
-    border-radius: 30px;
-    padding: 10px;
-    transition: transform 1s ease-in-out;
-    
-    
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+    padding: 18px;
+    overflow: hidden;
 }
-.products:hover{
-    transform: scale(1.05);
+
+.productcontainer .slick-slide {
+    padding: 8px;
 }
-.imageproduct{
-    width: 180px;
+
+.productcontainer .slick-list {
+    margin: 0 -8px;
+}
+
+.productcontainer a {
+    display: block;
+}
+
+.products {
+    width: 100%;
+    min-height: 278px;
+    background-color: #ffffff;
+    border: 1px solid #edf2f7;
+    border-radius: 14px;
+    padding: 12px;
+    transition: transform 0.25s ease;
+}
+
+.products:hover {
+    transform: translateY(-3px);
+}
+
+.imageproduct {
+    width: 100%;
     height: 150px;
     border: none;
-    margin-top: 20px;
-    margin-left: 5px;
-
-}
-.productname{
-    margin-top: 20px;
-    margin-left: 10px;
+    margin-top: 12px;
+    object-fit: contain;
 }
 
-.productprice{
-    margin-left: 10px;
+.productname {
+    margin-top: 16px;
+    color: #111827;
+    overflow-wrap: anywhere;
+}
+
+.productprice {
     font-weight: bold;
     font-size: 18px;
-
+    color: #111827;
 }
-.productoffer{
-    background-color: rgba(128, 128, 128, 0.295);
-    height: 20px;
+
+.productoffer {
+    background-color: #dcfce7;
+    min-height: 20px;
     width: 75px;
     text-align: center;
-    justify-content: center;
     border-radius: 10px;
-    color: #008040;
+    color: #15803d;
     font-size: 13px;
-    margin-top: auto;
-    margin-left: 10px;
+    margin-top: 10px;
+    font-weight: 800;
+}
 
+@media (max-width: 520px) {
+    .productcontainer {
+        width: min(100% - 20px, 1185px);
+        margin-top: 28px;
+        padding: 10px;
+        border-radius: 14px;
+    }
+
+    .products {
+        min-height: 246px;
+        border-radius: 12px;
+    }
+
+    .imageproduct {
+        height: 124px;
+    }
+
+    .productname {
+        margin-top: 12px;
+        font-size: 14px;
+    }
 }

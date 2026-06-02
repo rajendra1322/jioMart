@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import React, { useEffect, useState } from "react";
+import { MapContainer, TileLayer, Marker, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -11,11 +11,21 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png",
 });
 
-const LocationMarker = ({ setLocation }) => {
+const LocationMarker = ({ setLocation, selectedLocation }) => {
   const [position, setPosition] = useState({
     lat: 15.2993,
     lng: 74.1240,
   });
+  const map = useMap();
+  const markerPosition = selectedLocation || position;
+
+  useEffect(() => {
+    if (!selectedLocation) return;
+
+    map.flyTo([selectedLocation.lat, selectedLocation.lng], 15, {
+      duration: 0.8,
+    });
+  }, [map, selectedLocation]);
 
   useMapEvents({
     click(e) {
@@ -27,7 +37,7 @@ const LocationMarker = ({ setLocation }) => {
 
   return (
     <Marker
-      position={position}
+      position={markerPosition}
       draggable={true}
       eventHandlers={{
         dragend: (e) => {
@@ -42,10 +52,13 @@ const LocationMarker = ({ setLocation }) => {
   );
 };
 
-const MapPicker = ({ setLocation }) => {
+const MapPicker = ({ setLocation, selectedLocation }) => {
   return (
     <MapContainer
-      center={[15.2993, 74.1240]}
+      center={[
+        selectedLocation?.lat || 15.2993,
+        selectedLocation?.lng || 74.1240,
+      ]}
       zoom={13}
       style={{ height: "100%", width: "100%" }}
     >
@@ -53,7 +66,7 @@ const MapPicker = ({ setLocation }) => {
         attribution="&copy; OpenStreetMap contributors"
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <LocationMarker setLocation={setLocation} />
+      <LocationMarker setLocation={setLocation} selectedLocation={selectedLocation} />
     </MapContainer>
   );
 };

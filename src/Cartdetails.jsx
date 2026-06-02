@@ -3,10 +3,12 @@ import './Cartdetails.css'
 import Navigation from './Navigation';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
+import CartSkeleton from './skeletons/CartSkeleton';
 
 
 function Cartdetails  () {
     const [details,setDetails]=useState([]);
+    const [loading, setLoading] = useState(true);
     const navigate=useNavigate();
     useEffect(()=>{
         const fetchData=async()=>{
@@ -31,6 +33,8 @@ function Cartdetails  () {
         }
         catch(err){
             console.log(err);
+        } finally {
+            setLoading(false);
         }
 
         }
@@ -104,6 +108,9 @@ function Cartdetails  () {
   return (
     <div>
         <Navigation />
+        {loading ? (
+        <CartSkeleton />
+        ) : (
         <div className='maincontainer'>
         <div className='cartdetailscontainer'>
         <h2 className='cartdetailsh2'>My Cart</h2>
@@ -159,7 +166,7 @@ function Cartdetails  () {
             <p>OrderReview</p>
             </div>
             <div>
-            <p className='linetwo'>__________</p>
+            <p className='linetwo'>________</p>
             </div>
             <div>
             <p className='topthree'>3</p>
@@ -202,6 +209,7 @@ function Cartdetails  () {
 
      </div>
      </div>
+     )}
     </div>
   )
 }

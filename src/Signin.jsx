@@ -55,9 +55,9 @@ function Signin(props) {
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-indigo-200">
 
     {!showotp ? (
-      <form onSubmit={handleSubmit} className="w-full max-w-md">
+      <form onSubmit={handleSubmit} className="w-full max-w-md px-4">
 
-        <div className="bg-white rounded-2xl shadow-xl p-6 relative w-[500px] h-[700px] ml-[700px]">
+        <div className="bg-white rounded-2xl shadow-xl p-6 relative w-full min-h-[560px]">
 
           
           <Link to="/">
@@ -97,7 +97,7 @@ function Signin(props) {
               placeholder="xxxx@gmail.com"
               value={email}
               onChange={(e) => setMail(e.target.value)}
-              className="w-full mt-1 mb-[240px] p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
+              className="w-full mt-1 mb-[120px] sm:mb-[220px] p-3 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
             />
           </div>
 

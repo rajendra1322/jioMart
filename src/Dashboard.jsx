@@ -9,6 +9,7 @@ import {
 } from "recharts";
 import { BarChart, Bar } from "recharts";
 import { PieChart, Pie } from "recharts";
+import DashboardSkeleton from './skeletons/DashboardSkeleton';
 
 
 function Dashboard() {
@@ -18,19 +19,33 @@ function Dashboard() {
         totalProducts: 0
     });
     const [chartData, setChartData] = useState([]);
+    const [statsLoading, setStatsLoading] = useState(true);
+    const [chartLoading, setChartLoading] = useState(true);
     useEffect(() => {
         async function fetchData() {
-            const res = await axios.get("https://backend-fgbg.onrender.com/admin/stats")
-            console.log(res.data);
-            setStats(res.data);
+            try {
+                const res = await axios.get("https://backend-fgbg.onrender.com/admin/stats")
+                console.log(res.data);
+                setStats(res.data);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setStatsLoading(false);
+            }
         }
         fetchData();
     }, []);
 
     useEffect(() => {
         const fetchChart = async () => {
-            const res = await axios.get("https://backend-fgbg.onrender.com/admin/revenue-chart");
-            setChartData(res.data);
+            try {
+                const res = await axios.get("https://backend-fgbg.onrender.com/admin/revenue-chart");
+                setChartData(res.data);
+            } catch (err) {
+                console.log(err);
+            } finally {
+                setChartLoading(false);
+            }
         };
 
         fetchChart();
@@ -43,23 +58,25 @@ function Dashboard() {
 
     return (
         
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="admin-page bg-gray-100">
 
  
-  <div className="w-[260px] bg-white shadow-lg">
     <Adminhome />
-  </div>
 
  
-  <div className="flex-1 p-6 space-y-6 w-[1500px]">
+  <div className="admin-content space-y-6">
 
+    {statsLoading || chartLoading ? (
+      <DashboardSkeleton />
+    ) : (
+    <>
    
-    <h1 className="text-2xl font-bold text-gray-800 w-[1200px] ml-[150px]">
+    <h1 className="text-2xl font-bold text-gray-800">
       Dashboard Overview
     </h1>
 
     
-    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 ml-[150px]">
+    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
 
       
       <div className="bg-white rounded-2xl shadow-md p-5 flex items-center justify-between hover:shadow-xl transition">
@@ -97,10 +114,10 @@ function Dashboard() {
     </div>
 
    
-    <div className="grid gap-6 grid-cols-1 lg:grid-cols-3 ml-[150px]"  >
+    <div className="grid gap-6 grid-cols-1 lg:grid-cols-3"  >
 
      
-      <div className="bg-white rounded-2xl shadow-md p-5 col-span-3">
+      <div className="bg-white rounded-2xl shadow-md p-5 lg:col-span-3 min-w-0">
         <h2 className="text-lg font-semibold mb-4">Revenue Trend</h2>
         <ResponsiveContainer width="100%" height={220}>
           <LineChart data={chartData}>
@@ -114,7 +131,7 @@ function Dashboard() {
       </div>
 
       
-      <div className="bg-white rounded-2xl shadow-md p-5">
+      <div className="bg-white rounded-2xl shadow-md p-5 min-w-0">
         <h2 className="text-lg font-semibold mb-4">Monthly Orders</h2>
         <ResponsiveContainer width="100%" height={230}>
           <BarChart data={chartData}>
@@ -128,7 +145,7 @@ function Dashboard() {
       </div>
 
      
-      <div className="bg-white rounded-2xl shadow-md p-5 lg:col-span-1">
+      <div className="bg-white rounded-2xl shadow-md p-5 lg:col-span-1 min-w-0">
         <h2 className="text-lg font-semibold mb-4">Categories</h2>
         <ResponsiveContainer width="100%" height={230}>
           <PieChart>
@@ -145,6 +162,8 @@ function Dashboard() {
       </div>
 
     </div>
+    </>
+    )}
 
   </div>
 </div>

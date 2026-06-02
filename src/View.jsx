@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import axios from 'axios';
 import Adminhome from './Adminhome';
+import ProductDetailsSkeleton from './skeletons/ProductDetailsSkeleton';
 
 
 function View(){
@@ -25,17 +26,22 @@ function View(){
     },[id])
     
     if(!product){
-      return <h2>Loading....</h2>;
+      return <div className="admin-page bg-gray-50">
+        <Adminhome />
+        <div className="admin-content">
+          <ProductDetailsSkeleton />
+        </div>
+      </div>;
     }
 
 
   return (
     
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="admin-page bg-gray-50">
 
   <Adminhome />
 
-  <div className="flex-1 p-8">
+  <div className="admin-content">
     <button
         onClick={() => navigate(-1)}
         className="text-gray-600 hover:text-blue-600 transition hover:scale-105"
@@ -43,7 +49,7 @@ function View(){
         ←Back
       </button>
 
-    <div className="flex items-center justify-between mt-[100px] w-[500px] ml-[420px] ">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mt-12 max-w-3xl">
 
       
 
@@ -60,13 +66,13 @@ function View(){
 
     </div>
 
-    <div className="bg-white border border-gray-100 shadow-2xl rounded-2xl p-6 max-w-3xl mx-auto w-[530px] h-[600px] mt-1 ml-[400px]">
+    <div className="bg-white border border-gray-100 shadow-2xl rounded-2xl p-6 max-w-3xl w-full mt-4">
 
       <div className="flex justify-center mb-6">
         <img
           src={product.image}
           alt={product.name}
-          className="w-[400px] h-[250px] object-cover rounded-xl mb-10 shadow-xl hover:scale-105"
+          className="w-full max-w-[400px] h-[250px] object-contain rounded-xl mb-10 shadow-xl hover:scale-105"
         />
       </div>
 

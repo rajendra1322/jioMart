@@ -1,8 +1,7 @@
 import './Card.css'
-import image from "./assets/JioMartSale.webp"
 import bag from './assets/ssb.webp'
 
-function Card(props){
+function Card(){
     return (
         <div className='cardCantainer'>
             <img src={bag} alt="couponImage" className='couponI' />

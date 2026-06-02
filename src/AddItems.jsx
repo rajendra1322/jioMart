@@ -4,16 +4,19 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
 import Adminhome from './Adminhome'
+import TableSkeleton from './skeletons/TableSkeleton'
 
 function AddItems  ()  {
 const [items,setItem]=useState([]);
 const [enable,setEnable]=useState(false);
 const[disablee,setDisablee]=useState(false);
+const [loading,setLoading]=useState(true);
   useEffect(()=>{
   axios.get("https://backend-fgbg.onrender.com/fetchProduct")
   .then(res=>setItem(res.data))
   
   .catch(err=>console.log(err))
+  .finally(()=>setLoading(false))
    
   },[])
   
@@ -43,31 +46,34 @@ const[disablee,setDisablee]=useState(false);
   
   return (
   
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="admin-page bg-gray-50">
 
   
   <Adminhome />
 
   
-  <div className="flex-1 p-8">
+  <div className="admin-content">
 
     
-    <div className="flex items-center justify-between mb-6">
-      <h2 className="text-[30px]  font-bold text-gray-800 ml-48 ">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+      <h2 className="text-[30px] font-bold text-gray-800">
         Products Management
       </h2>
 
       <Link to="/Items">
-        <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl shadow-xl  transition hover:scale-105 mt-11  mr-5">
+        <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl shadow-xl transition hover:scale-105">
           + Add Item
         </button>
       </Link>
     </div>
 
     
-    <div className="bg-white ml-[200px] rounded-2xl shadow-xl border border-gray-300 overflow-hidden">
+    {loading ? (
+      <TableSkeleton rows={8} columns={3} />
+    ) : (
+    <div className="bg-white rounded-2xl shadow-xl border border-gray-300 overflow-x-auto">
 
-      <table className="w-[1000px] text-left">
+      <table className="w-full min-w-[640px] text-left">
 
         
         <thead className="bg-gray-100 text-gray-600 text-sm uppercase">
@@ -115,6 +121,7 @@ const[disablee,setDisablee]=useState(false);
       </table>
 
     </div>
+    )}
 
     
     {enable && (

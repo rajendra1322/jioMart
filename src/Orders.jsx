@@ -6,9 +6,11 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Modal, Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import Adminhome from "./Adminhome";
+import TableSkeleton from "./skeletons/TableSkeleton";
 
 function Orders() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   
   const [openModal, setOpenModal] = useState(false);
@@ -21,10 +23,16 @@ function Orders() {
 
   
   const fetchOrders = async () => {
-    const res = await axios.get(
-      "https://backend-fgbg.onrender.com/status/orders"
-    );
-    setOrders(res.data);
+    try {
+      const res = await axios.get(
+        "https://backend-fgbg.onrender.com/status/orders"
+      );
+      setOrders(res.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -145,13 +153,16 @@ function Orders() {
  
 
   return (
-    <div style={{ display: "flex" }}>
+    <div className="admin-page">
       <Adminhome />
 
-      <div style={{ flex: 1, padding: "20px" }}>
-        <h2 style={{ marginBottom: "20px", fontSize:"30px" }}>Order Details</h2>
+      <div className="admin-content">
+        <h2 className="admin-page-title">Order Details</h2>
 
-        <div style={{ height: 750, width: 1300, marginLeft:50, gap:"30px" }}>
+        {loading ? (
+          <TableSkeleton rows={8} columns={8} />
+        ) : (
+        <div className="admin-data-grid">
           <DataGrid
             rows={rows}
             columns={columns}
@@ -160,6 +171,7 @@ function Orders() {
             disableRowSelectionOnClick
           />
         </div>
+        )}
       </div>
 
      
@@ -170,7 +182,9 @@ function Orders() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 600,
+            width: "min(600px, calc(100vw - 32px))",
+            maxHeight: "90vh",
+            overflowY: "auto",
             bgcolor: "white",
             borderRadius: 3,
             boxShadow: 24,
@@ -250,7 +264,9 @@ function Orders() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 500,
+            width: "min(500px, calc(100vw - 32px))",
+            maxHeight: "90vh",
+            overflowY: "auto",
             bgcolor: "white",
             borderRadius: 3,
             boxShadow: 24,
